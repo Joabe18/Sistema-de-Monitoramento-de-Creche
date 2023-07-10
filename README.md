@@ -23,5 +23,5 @@ Para a crição da interface onde inserimos os dados utilizamos a linguagem de p
 
 # Power BI 
 Para criação do relatório utilizamos a ferramenta Power BI onde foi realizada a crição dos gráficos e estruturação do modelo estrela utilizado no projeto.<br><br>
-<img width="443" alt="relatorioCreche" src="https://github.com/Joabe18/Sistema-de-Gestao-de-Creche/assets/87384920/91ca6a15-1d63-499b-a5ad-dcc757dc8c73"><br><br>
-<img width="506" alt="modeloCreche" src="https://github.com/Joabe18/Sistema-de-Gestao-de-Creche/assets/87384920/4282cd6a-275d-4158-a477-77088e01c770">
+<img width="1000" alt="relatorioCreche" src="https://github.com/Joabe18/Sistema-de-Gestao-de-Creche/assets/87384920/91ca6a15-1d63-499b-a5ad-dcc757dc8c73"><br><br>
+<img width="1000" alt="modeloCreche" src="https://github.com/Joabe18/Sistema-de-Gestao-de-Creche/assets/87384920/4282cd6a-275d-4158-a477-77088e01c770">
