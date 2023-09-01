@@ -1,0 +1,120 @@
+// ver especificações
+
+CALL dbms.listConfig()
+YIELD name, value
+WHERE name STARTS WITH 'server.memory'
+RETURN name, value
+ORDER BY name
+
+// Importação de Cellphone Data
+
+LOAD CSV WITH HEADERS FROM "file:///celldata_tratado.csv" AS celldata
+FIELDTERMINATOR ','
+CREATE (:Celulares {cellphone_id:celldata.cellphone_id, brand:celldata.brand, model: celldata.model, 
+operating_system:celldata.operating_system, internal_memory:celldata.internal_memory, RAM:celldata.RAM,
+performance:celldata.performance,main_camera:celldata.main_camera,selfie_camera:celldata.selfie_camera,
+battery_size:celldata.battery_size,screen_size:celldata.screen_size,weight:celldata.weight,
+price:celldata.price,release_date:celldata.release_date})
+
+
+// Importação de Cellphone Users
+
+LOAD CSV WITH HEADERS FROM "file:///cellusers_tratado.csv" AS cellusers
+FIELDTERMINATOR ','
+CREATE (:Usuarios {user_id:cellusers.user_id, age:cellusers.age, gender: cellusers.gender, 
+occupation:cellusers.occupation})
+
+
+// Importação de Cellphone Ratings
+
+LOAD CSV WITH HEADERS FROM "file:///cellratings_tratado.csv" AS cellratings
+FIELDTERMINATOR ','
+CREATE (:Avaliacoes {user_id:cellratings.user_id, cellphone_id:cellratings.cellphone_id, rating:cellratings.rating})
+
+
+// indices Cellphone
+CREATE INDEX idx_cellphone_id FOR (c:Celulares)
+ON (c.cellphone_id)
+
+CREATE INDEX idx_brand FOR (c:Celulares)
+ON (c.brand)
+
+CREATE INDEX idx_model FOR (c:Celulares)
+ON (c.model)
+
+CREATE INDEX idx_os FOR (c:Celulares)
+ON (c.operating_system)
+
+CREATE INDEX idx_intmemory FOR (c:Celulares)
+ON (c.internal_memory)
+
+CREATE INDEX idx_ram FOR (c:Celulares)
+ON (c.RAM)
+
+CREATE INDEX idx_performance FOR (c:Celulares)
+ON (c.performance)
+
+CREATE INDEX idx_maincamera FOR (c:Celulares)
+ON (c.main_camera)
+
+CREATE INDEX idx_selfie FOR (c:Celulares)
+ON (c.selfie_camera)
+
+CREATE INDEX idx_battery FOR (c:Celulares)
+ON (c.battery_size)
+
+CREATE INDEX idx_screen FOR (c:Celulares)
+ON (c.screen_size)
+
+CREATE INDEX idx_weight FOR (c:Celulares)
+ON (c.weight)
+
+CREATE INDEX idx_price FOR (c:Celulares)
+ON (c.price)
+
+CREATE INDEX idx_release FOR (c:Celulares)
+ON (c.release_date)
+
+
+// indices Users
+CREATE INDEX idx_iduser FOR (u:Usuarios)
+ON (u.user_id)
+
+CREATE INDEX idx_age FOR (u:Usuarios)
+ON (u.age)
+
+CREATE INDEX idx_gender FOR (u:Usuarios)
+ON (u.gender)
+
+CREATE INDEX idx_occupation FOR (u:Usuarios)
+ON (u.occupation)
+
+
+// indices Ratings
+CREATE INDEX idx_id_user FOR (r:Avaliacoes)
+ON (r.user_id)
+
+CREATE INDEX idx_id_cell FOR (r:Avaliacoes)
+ON (r.cellphone_id)
+
+CREATE INDEX idx_rating FOR (r:Avaliacoes)
+ON (r.rating)
+
+
+// Criação dos relacionamentos
+
+MATCH (u:Usuarios),(r:Avaliacoes),(c:Celulares)
+WHERE r.user_id = u.user_id
+AND r.cellphone_id = c.cellphone_id
+MERGE (u)-[ur:UserRating {idusuario:r.user_id}]->(r)-[rc:RatingCell {idcelular:r.cellphone_id}]->(c)
+WITH COUNT(*) AS AFFECTED
+RETURN *
+
+// Consulta de teste
+
+MATCH (u)-[]->(r)-[]->(c)
+RETURN *
+LIMIT 100
+
+
+ue a marca de aparelho que pessoas entre 18 e 25 anos mais utilizam
